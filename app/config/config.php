@@ -79,7 +79,16 @@ $config['environment'] = getenv('APP_ENV') ?: 'development';
 | WARNING: You MUST set this value!
 |
 */
-$config['base_url'] = 'https://valdez-ryanemmanuel-lavalust.onrender.com';
+$forwarded_host = $_SERVER['HTTP_X_FORWARDED_HOST'] ?? '';
+$request_host = $forwarded_host ?: ($_SERVER['HTTP_HOST'] ?? '');
+$forwarded_proto = $_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '';
+$request_proto = $forwarded_proto ?: ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http');
+
+$config['base_url'] = getenv('BASE_URL') ?: (
+	$request_host !== ''
+		? $request_proto . '://' . $request_host
+		: 'https://valdez-ryanemmanuel-lavalust.onrender.com'
+);
 
 /*
 |--------------------------------------------------------------------------
