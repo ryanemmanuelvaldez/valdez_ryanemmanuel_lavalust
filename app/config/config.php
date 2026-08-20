@@ -79,10 +79,7 @@ $config['environment'] = getenv('APP_ENV') ?: 'development';
 | WARNING: You MUST set this value!
 |
 */
-$base_host = $_SERVER['HTTP_HOST'] ?? '';
-$base_scheme = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || ($_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '') === 'https' ? 'https' : 'http';
-$base_path = strpos($base_host, 'localhost') !== false ? '/LavaLust' : '';
-$config['base_url'] = getenv('BASE_URL') ?: ($base_host ? $base_scheme . '://' . $base_host . $base_path : '');
+$config['base_url'] = 'https://valdez-ryanemmanuel-lavalust.onrender.com';
 
 /*
 |--------------------------------------------------------------------------
