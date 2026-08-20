@@ -147,6 +147,11 @@ function _handlers()
  */
 $config = load_class('config', 'kernel');
 
+// Load optional middleware config if present (merges into global config)
+if (file_exists(APP_DIR . 'config/middleware.php')) {
+	$config->load('middleware');
+}
+
 /**
  * Instantiate the logger class
  */

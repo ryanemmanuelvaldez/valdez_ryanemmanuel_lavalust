@@ -41,4 +41,16 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
 | Used for adding middlewares
 |
 */
-$config['middlewares'] = [];
+$student_middleware = null;
+// Ensure middleware class is available then register it
+$student_file = APP_DIR . 'middlewares' . DIRECTORY_SEPARATOR . 'StudentMiddleware.php';
+if (file_exists($student_file)) {
+	require_once $student_file;
+	if (class_exists('StudentMiddleware')) {
+		$student_middleware = new StudentMiddleware();
+	}
+}
+
+$config['middlewares'] = [
+	'student' => $student_middleware,
+];

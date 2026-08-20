@@ -1,29 +1,15 @@
-AddDefaultCharset UTF-8
 <IfModule mod_rewrite.c>
+    <IfModule mod_negotiation.c>
+        Options -MultiViews -Indexes
+    </IfModule>
+
     RewriteEngine On
 
-    # --------------------------------------------------
-    # Allow index.php
-    <Files "index.php">
-        Require all granted
-    </Files>
+    # Send student routes through the main LavaLust front controller.
+    RewriteRule ^student/profile/?$ public/index.php/student/profile [END]
+    RewriteRule ^student/?$ public/index.php/student [END]
 
-    # --------------------------------------------------
-    # Deny access to sensitive directories
-    RedirectMatch 403 ^/(app|scheme|console|runtime)/
-
-    # --------------------------------------------------
-    # Deny access to sensitive files
-    <FilesMatch "\.(env|json|xml|log|md|lock|git|ini|bak|sql)$">
-        Require all denied
-    </FilesMatch>
-
-    # --------------------------------------------------
-    # Prevent directory browsing
-    Options -Indexes
-
-    # --------------------------------------------------
-    # Route all requests through public/index.php
-    RewriteCond %{REQUEST_URI} !^/public/
-    RewriteRule ^(.*)$ public/$1 [L,QSA]
+    # Keep other requests inside the public document root.
+    RewriteRule ^public(?:/|$) - [L]
+    RewriteRule ^(.*)$ public/$1 [L]
 </IfModule>
