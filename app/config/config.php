@@ -85,10 +85,21 @@ $forwarded_proto = $_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '';
 $request_proto = $forwarded_proto ?: ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http');
 $configured_base_url = trim((string) getenv('BASE_URL'));
 $configured_base_is_local = preg_match('/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?(\/|$)/i', $configured_base_url) === 1;
+$public_dir = realpath(__DIR__ . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . '..' . DIRECTORY_SEPARATOR . 'public');
+$document_root = realpath($_SERVER['DOCUMENT_ROOT'] ?? '');
+$base_path = '';
+
+if ($public_dir !== false && $document_root !== false) {
+	$public_dir = str_replace('\\', '/', rtrim($public_dir, '\\/'));
+	$document_root = str_replace('\\', '/', rtrim($document_root, '\\/'));
+	if (stripos($public_dir, $document_root . '/') === 0) {
+		$base_path = substr($public_dir, strlen($document_root));
+	}
+}
 
 $config['base_url'] = ($configured_base_url !== '' && !$configured_base_is_local) ? $configured_base_url : (
 	$request_host !== ''
-		? $request_proto . '://' . $request_host
+		? $request_proto . '://' . $request_host . $base_path
 		: 'https://valdez-ryanemmanuel-lavalust.onrender.com'
 );
 
