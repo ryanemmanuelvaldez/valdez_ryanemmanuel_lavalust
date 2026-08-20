@@ -12,7 +12,6 @@ defined('PREVENT_DIRECT_ACCESS') OR exit('No direct script access allowed');
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
-$config['base_url'] 				= 'http://localhost/LavaLust';
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
@@ -80,7 +79,7 @@ $config['environment'] = getenv('APP_ENV') ?: 'development';
 | WARNING: You MUST set this value!
 |
 */
-$config['base_url'] 				= 'http://localhost/LavaLust';
+$config['base_url'] 				= getenv('BASE_URL') ?: (strpos($_SERVER['HTTP_HOST'] ?? '', 'localhost') !== false ? 'http://localhost/LavaLust' : '');
 
 /*
 |--------------------------------------------------------------------------
