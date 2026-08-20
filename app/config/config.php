@@ -83,8 +83,10 @@ $forwarded_host = $_SERVER['HTTP_X_FORWARDED_HOST'] ?? '';
 $request_host = $forwarded_host ?: ($_SERVER['HTTP_HOST'] ?? '');
 $forwarded_proto = $_SERVER['HTTP_X_FORWARDED_PROTO'] ?? '';
 $request_proto = $forwarded_proto ?: ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http');
+$configured_base_url = trim((string) getenv('BASE_URL'));
+$configured_base_is_local = preg_match('/^https?:\/\/(localhost|127\.0\.0\.1)(:\d+)?(\/|$)/i', $configured_base_url) === 1;
 
-$config['base_url'] = getenv('BASE_URL') ?: (
+$config['base_url'] = ($configured_base_url !== '' && !$configured_base_is_local) ? $configured_base_url : (
 	$request_host !== ''
 		? $request_proto . '://' . $request_host
 		: 'https://valdez-ryanemmanuel-lavalust.onrender.com'
